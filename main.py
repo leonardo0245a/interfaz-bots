@@ -1039,10 +1039,10 @@ class BotDCAApp(ctk.CTk):
         try:
             response = requests.get(
                 "https://bot-server-cg3g.onrender.com/api/bots")
-            data = response.json().get("bots", [])
-            print(f"🔄 Bots activos en servidor: {data}")
+            bot_ids = response.json().get("bots", [])
+            print(f"🔄 Bots activos en servidor: {bot_ids}")
 
-            for bot_id in data:
+            for bot_id in bot_ids:
                 symbol, exchange_id = bot_id.split("-")
 
                 if exchange_id not in self.exchange_instances:
@@ -1052,12 +1052,43 @@ class BotDCAApp(ctk.CTk):
 
                 exchange = self.exchange_instances[exchange_id]
 
-                # Crear visual del bot con datos vacíos (placeholder)
-                bot = BotFrame(self.bots_frame, symbol, 0, 0,
-                               0, 0, exchange, self.remove_bot)
-                bot.label_info.configure(
-                    text=f"🔄 Bot activo en servidor: {bot_id}", text_color="yellow")
+                # Obtener configuración completa del bot desde el servidor
+                config_response = requests.get(
+                    f"https://bot-server-cg3g.onrender.com/api/bot_status?id={bot_id}"
+                )
+                if config_response.status_code != 200:
+                    print(f"[ERROR] No se pudo recuperar config de {bot_id}")
+                    continue
+
+                config = config_response.json()
+
+                bot = BotFrame(
+                    self.bots_frame,
+                    config["symbol"],
+                    config["monto"],
+                    config["tp_pct"],
+                    config["sep_pct"],
+                    config["os_num"],
+                    exchange,
+                    self.remove_bot,
+                )
+
+                bot.vnc_total = config["vnc_total"]
+                bot.vnc_total_cost = config["vnc_total_cost"]
+                bot.total_trades = config["total_trades"]
+                bot.contador_ciclos = config["contador_ciclos"]
+                bot.dca_sell_pct_var.set(config["dca_pct"])
+                bot.sl_pct_var.set(config["sl"])
+                bot.tp_plus_var.set(config["tp_plus"])
+                bot.reiniciar_var.set(config["reiniciar"])
+                bot.reiniciar_os_var.set(config["reiniciar_os"])
+                if config["reiniciar"]:
+                    bot.reiniciar_checkbox.select()
+                if config["reiniciar_os"]:
+                    bot.reiniciar_os_checkbox.select()
+
                 bot.pack(pady=2, fill="x")
+                bot.update_labels()
                 self.bots.append(bot)
 
             self.update_dashboard()
@@ -1178,6 +1209,7 @@ class BotDCAApp(ctk.CTk):
 
             bot.pack(pady=2, fill="x")
             self.bots.append(bot)
+
             self.update_dashboard()
 
             # ✅ También iniciar el bot en el servidor
