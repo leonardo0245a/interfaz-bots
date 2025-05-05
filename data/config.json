@@ -1,0 +1,9 @@
+{
+    "exchanges": {
+        "bybit": {
+            "apiKey": "4n3Pk9ORuZvy3Ta32d",
+            "apiSecret": "rcHY7C4P4PA06jWLy9zQLtLOMIumOFCYucfV",
+            "connected": true
+        }
+    }
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "symbol": "ETH/USDT",
+    "monto": 5.3,
+    "tp_pct": 0.05,
+    "sep_pct": 0.05,
+    "os_num": 1,
+    "exchange": "bybit",
+    "vnc_total": 0.0,
+    "vnc_total_cost": 0.0,
+    "total_trades": 0,
+    "contador_ciclos": 0,
+    "dca_pct": "0.5%",
+    "sl": "",
+    "tp_plus": "",
+    "reiniciar": true,
+    "reiniciar_os": true
+  },
+  {
+    "symbol": "LTC/USDT",
+    "monto": 5.3,
+    "tp_pct": 0.05,
+    "sep_pct": 0.05,
+    "os_num": 1,
+    "exchange": "bybit",
+    "vnc_total": 0.0,
+    "vnc_total_cost": 0.0,
+    "total_trades": 0,
+    "contador_ciclos": 0,
+    "dca_pct": "0.5%",
+    "sl": "",
+    "tp_plus": "",
+    "reiniciar": true,
+    "reiniciar_os": true
+  }
+]
