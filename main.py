@@ -1175,6 +1175,9 @@ class BotDCAApp(ctk.CTk):
                     "tp_plus": "",
                     "reiniciar": True,
                     "reiniciar_os": True,
+                    "apiKey": self.api_key_entry.get(),
+                    "apiSecret": self.api_secret_entry.get(),
+  
                 }
                 requests.post(
                     "https://bot-server-cg3g.onrender.com/api/start_bot", json=bot_data)
